@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class QuestMenu extends Menu {
 	Quest quest;
 	List<QuestDialog> availableDialogs = new ArrayList<QuestDialog>();
+	List<QuestDialog> allDialogs = new ArrayList<QuestDialog>();
 
 	public QuestMenu(Quest quest, Player player) {
 		super(player);
@@ -50,7 +51,15 @@ public class QuestMenu extends Menu {
 		List<QuestDialog> collected = availableDialogs.stream()
 				.filter(d -> d.getSlot() == e.getSlot() && d.isVisible())
 				.collect(Collectors.toList());
-		collected.get(0).activate(this);
+		if (collected.size() <= 0)
+			return;
+		QuestDialog dialog = collected.get(0);
+		if (dialog.isPlaying())
+			dialog.skip();
+		else {
+			dialog.activate(this);
+			getPlayer().sendMessage(dialog.toString());
+		}
 	}
 
 	@Override
@@ -60,7 +69,8 @@ public class QuestMenu extends Menu {
 		String title = "§1Quests§f| §2" + quest.getGiver().getName();
 		setInventory(Bukkit.createInventory(null, 9 * 4,
 				title.length() >= 30 ? title.substring(0, 30) + ".." : title));
-		quest.getDialogs().forEach(this::enableDialog);
+		allDialogs.addAll(quest.getDialogs());
+		allDialogs.forEach(this::enableDialog);
 		getPlayer().openInventory(getInventory());
 		return true;
 	}

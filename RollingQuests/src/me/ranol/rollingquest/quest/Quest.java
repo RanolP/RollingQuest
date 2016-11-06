@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
-public class Quest {
+public class Quest implements Cloneable {
 	private String questName;
 	private List<QuestDialog> dialogs = new ArrayList<>();
 	private Npc giver;
