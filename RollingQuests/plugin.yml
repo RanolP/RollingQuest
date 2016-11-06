@@ -1,0 +1,7 @@
+name: RollingQuest
+version: 1.0
+main: me.ranol.rollingquest.RollingQuest
+author: Ranol_
+commands:
+  rq:
+    description: "RollingQuests's Main Command"
