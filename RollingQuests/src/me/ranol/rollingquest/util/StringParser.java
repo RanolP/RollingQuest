@@ -28,4 +28,10 @@ public class StringParser {
 		}
 		return result;
 	}
+
+	public static String parse(List<String> values) {
+		StringBuilder builder = new StringBuilder();
+		values.stream().map(s -> s + " ").forEach(builder::append);
+		return builder.toString();
+	}
 }

@@ -26,8 +26,9 @@ public class RollingQuest extends JavaPlugin {
 		QuestDialog third = new QuestDialog("marc3")
 				.setMessage("§c피자 §e10개§f만 사 와.").setDisplay("§aMarc와 대화하기")
 				.setSlot(20).setStackId(260);
-		first.addCommand(QuestCommand.createCommand("dialog marc2"));
-		second.addCommand(QuestCommand.createCommand("dialog marc3"));
+		first.addCommand(QuestCommand.createCommand("show marc2"));
+		second.addCommand(QuestCommand.createCommand("show marc3"));
+		third.addCommand(QuestCommand.createCommand("close"));
 		quest.addDialog(first);
 		quest.addDialog(second);
 		quest.addDialog(third);

@@ -27,4 +27,11 @@ public class Wrap<T> {
 	public void toEmpty() {
 		obj = null;
 	}
+
+	public Wrap<T> clone() {
+		Wrap<T> clone = Wrap.empty();
+		if (!isEmpty())
+			clone.set(get());
+		return clone;
+	}
 }

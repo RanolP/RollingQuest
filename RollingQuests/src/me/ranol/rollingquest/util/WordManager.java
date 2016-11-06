@@ -12,6 +12,7 @@ public class WordManager {
 	private static char[] 중성 = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ".toCharArray();
 	private static char[] 종성 = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ".toCharArray();
 	private static HashMap<Character, char[]> back = new HashMap<>();
+
 	static {
 		back.put('ㄱ', new char[] { 'ㄳ' });
 		back.put('ㄴ', new char[] { 'ㄵ', 'ㄶ' });
@@ -33,14 +34,10 @@ public class WordManager {
 						.forEach(texts::add);
 				now.delete(0, now.length());
 				now.append(texts.get(texts.size() - 1));
-			} else if (get.equals("§")) {
-				i++;
-				get += real.substring(i, i + 1);
-				texts.add(now + get);
-				now.append(get);
-			} else if (get.equals(" ")) {
-				i++;
-				get += real.substring(i, i + 1);
+			} else if (get.equals("§") || get.equals(" ")) {
+				int found = find(i, real);
+				get = real.substring(i, i + found + 1);
+				i += found;
 				texts.add(now + get);
 				now.append(get);
 			} else {
@@ -49,6 +46,21 @@ public class WordManager {
 			}
 		}
 		return texts;
+	}
+
+	public static int find(int from, String s) {
+		int find = 0;
+		for (int i = from; i < s.length(); i++) {
+			switch (s.substring(i, i + 1)) {
+			case "§":
+				find++;
+				break;
+			case " ":
+				find++;
+				break;
+			}
+		}
+		return find;
 	}
 
 	public static List<String> toType(char c) {

@@ -12,7 +12,7 @@ import me.ranol.rollingquest.util.Wrap;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class QuestDialog {
+public class QuestDialog implements Cloneable {
 	private String msg;
 	private int slot;
 	private int stackId;
@@ -21,7 +21,7 @@ public class QuestDialog {
 	private boolean visible = false;
 	private final String name;
 	private Wrap<Boolean> skip = Wrap.empty(false);
-	private List<QuestCommand> commands = new ArrayList<QuestCommand>();
+	private ArrayList<QuestCommand> commands = new ArrayList<QuestCommand>();
 
 	public QuestDialog(String name) {
 		this.name = name;
@@ -38,7 +38,7 @@ public class QuestDialog {
 
 	@Override
 	public String toString() {
-		return "QuestDialog[" + msg + "]";
+		return "QuestDialog[message=" + msg + ", visible=" + isVisible() + "]";
 	}
 
 	public int getSlot() {
@@ -73,7 +73,7 @@ public class QuestDialog {
 			Wrap<Integer> index = Wrap.empty(0);
 			List<String> words = WordManager.typingAll(msg, true);
 			id.set(RollingQuest.addRepeatingTask(() -> {
-				if (skip.get()) {
+				if (!skip.isEmpty() && skip.get()) {
 					RollingQuest.cancelTask(id.get());
 					id.toEmpty();
 					skip.toEmpty();
@@ -144,5 +144,20 @@ public class QuestDialog {
 		if (isPlaying()) {
 			skip.set(true);
 		}
+	}
+
+	@Override
+	public QuestDialog clone() {
+		QuestDialog dialog = new QuestDialog(this.name);
+		dialog.commands = new ArrayList<>();
+		this.commands.forEach(dialog.commands::add);
+		dialog.display = this.display;
+		dialog.id = this.id.clone();
+		dialog.msg = this.msg;
+		dialog.skip = this.skip.clone();
+		dialog.slot = this.slot;
+		dialog.stackId = this.stackId;
+		dialog.visible = this.visible;
+		return dialog;
 	}
 }
