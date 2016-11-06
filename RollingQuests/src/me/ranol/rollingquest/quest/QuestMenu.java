@@ -14,24 +14,24 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class QuestMenu extends Menu {
-	Quest quest;
-	List<QuestDialog> allDialogs = new ArrayList<QuestDialog>();
+	DialogSet quest;
+	List<MessageDialog> allDialogs = new ArrayList<MessageDialog>();
 
-	public QuestMenu(Quest quest, Player player) {
+	public QuestMenu(DialogSet quest, Player player) {
 		super(player);
 		this.quest = quest;
 	}
 
-	public Quest getQuest() {
+	public DialogSet getQuest() {
 		return quest;
 	}
 
-	public void enableDialog(QuestDialog dialog) {
+	public void enableDialog(MessageDialog dialog) {
 		dialog.setVisible(true);
 		dialog.visible(this);
 	}
 
-	public void disableDialog(QuestDialog dialog) {
+	public void disableDialog(MessageDialog dialog) {
 		dialog.setVisible(false);
 		getInventory().setItem(dialog.getSlot(), new ItemStack(Material.AIR));
 	}
@@ -40,12 +40,12 @@ public class QuestMenu extends Menu {
 	public void onClick(InventoryClickEvent e) {
 		getPlayer().sendMessage(allDialogs.toString());
 		e.setCancelled(true);
-		List<QuestDialog> collected = allDialogs.stream()
+		List<MessageDialog> collected = allDialogs.stream()
 				.filter(d -> d.getSlot() == e.getSlot() && d.isVisible())
 				.collect(Collectors.toList());
 		if (collected.size() <= 0)
 			return;
-		QuestDialog dialog = collected.get(0);
+		MessageDialog dialog = collected.get(0);
 		if (dialog.isPlaying())
 			dialog.skip();
 		else {
@@ -57,7 +57,7 @@ public class QuestMenu extends Menu {
 	public boolean open() {
 		if (!super.open())
 			return false;
-		String title = "§1Quests§f| §2" + quest.getGiver().getName();
+		String title = "§1Quests§f| §2" + quest.getGiver().getVisibleName();
 		setInventory(Bukkit.createInventory(null, 9 * 4,
 				title.length() >= 30 ? title.substring(0, 30) + ".." : title));
 		quest.getDialogs().stream().map(d -> d.clone())
@@ -73,9 +73,9 @@ public class QuestMenu extends Menu {
 		allDialogs.forEach(d -> d.cancelTask());
 	}
 
-	public QuestDialog getDialog(String name) {
-		QuestDialog result = null;
-		List<QuestDialog> filtered = allDialogs.stream()
+	public MessageDialog getDialog(String name) {
+		MessageDialog result = null;
+		List<MessageDialog> filtered = allDialogs.stream()
 				.filter(d -> d.getName().equals(name))
 				.collect(Collectors.toList());
 		if (filtered.size() > 0)
@@ -83,12 +83,12 @@ public class QuestMenu extends Menu {
 		return result;
 	}
 
-	public List<QuestDialog> getDialogs(int slot) {
+	public List<MessageDialog> getDialogs(int slot) {
 		return allDialogs.stream().filter(d -> d.getSlot() == slot)
 				.collect(Collectors.toList());
 	}
 
-	public void disableDialogs(List<QuestDialog> dialogs) {
+	public void disableDialogs(List<MessageDialog> dialogs) {
 		dialogs.forEach(this::disableDialog);
 	}
 }

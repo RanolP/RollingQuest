@@ -1,0 +1,4 @@
+name: Marc_Pizza
+visible: "§aMarc§e의 피자 모으기"
+modifiers:
+  - takeitem 322 10 1

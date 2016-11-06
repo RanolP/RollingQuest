@@ -1,0 +1,12 @@
+#한국어의 부드러운 타이핑에 대한 여부입니다.
+#기본: true
+smooth-typing: true
+#텍스트를 재생할 틱 입니다.
+#기본: 2
+type-per-tick: 2
+#파일의 로드를 보는 것에 대한 여부입니다.
+#기본: true
+view-load: true
+#item을 지정하지 않았을 때 보여지는 아이템입니다.
+#기본: 260(사과)
+default-item: 260

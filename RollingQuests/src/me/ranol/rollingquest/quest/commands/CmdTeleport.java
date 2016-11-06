@@ -6,7 +6,7 @@ import me.ranol.rollingquest.quest.QuestMenu;
 
 import org.bukkit.Location;
 
-public class CmdTeleport implements QuestCommand {
+public class CmdTeleport implements DialogCommand {
 	double x, y, z;
 
 	@Override

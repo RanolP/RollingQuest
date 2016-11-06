@@ -2,10 +2,10 @@ package me.ranol.rollingquest.quest.commands;
 
 import java.util.List;
 
-import me.ranol.rollingquest.quest.QuestDialog;
+import me.ranol.rollingquest.quest.MessageDialog;
 import me.ranol.rollingquest.quest.QuestMenu;
 
-public class CmdHide implements QuestCommand {
+public class CmdHide implements DialogCommand {
 	String dialog;
 
 	@Override
@@ -15,7 +15,7 @@ public class CmdHide implements QuestCommand {
 
 	@Override
 	public void activate(QuestMenu menu) {
-		QuestDialog dialog;
+		MessageDialog dialog;
 		if ((dialog = menu.getDialog(this.dialog)) != null) {
 			menu.disableDialog(dialog);
 		}

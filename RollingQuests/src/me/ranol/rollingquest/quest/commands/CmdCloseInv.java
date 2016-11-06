@@ -4,7 +4,7 @@ import java.util.List;
 
 import me.ranol.rollingquest.quest.QuestMenu;
 
-public class CmdCloseInv implements QuestCommand {
+public class CmdCloseInv implements DialogCommand {
 
 	@Override
 	public void apply(List<String> args) {

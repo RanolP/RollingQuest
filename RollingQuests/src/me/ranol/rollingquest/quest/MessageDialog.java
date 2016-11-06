@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.ranol.rollingquest.RollingQuest;
-import me.ranol.rollingquest.quest.commands.QuestCommand;
+import me.ranol.rollingquest.quest.commands.DialogCommand;
 import me.ranol.rollingquest.util.WordManager;
 import me.ranol.rollingquest.util.Wrap;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class QuestDialog implements Cloneable {
+public class MessageDialog implements Cloneable {
 	private String msg;
 	private int slot;
 	private int stackId;
@@ -21,9 +21,9 @@ public class QuestDialog implements Cloneable {
 	private boolean visible = false;
 	private final String name;
 	private Wrap<Boolean> skip = Wrap.empty(false);
-	private ArrayList<QuestCommand> commands = new ArrayList<QuestCommand>();
+	private ArrayList<DialogCommand> commands = new ArrayList<DialogCommand>();
 
-	public QuestDialog(String name) {
+	public MessageDialog(String name) {
 		this.name = name;
 	}
 
@@ -31,7 +31,7 @@ public class QuestDialog implements Cloneable {
 		return msg;
 	}
 
-	public QuestDialog setMessage(String s) {
+	public MessageDialog setMessage(String s) {
 		this.msg = s;
 		return this;
 	}
@@ -45,7 +45,7 @@ public class QuestDialog implements Cloneable {
 		return slot;
 	}
 
-	public QuestDialog setSlot(int slot) {
+	public MessageDialog setSlot(int slot) {
 		this.slot = slot;
 		return this;
 	}
@@ -54,7 +54,7 @@ public class QuestDialog implements Cloneable {
 		return stackId;
 	}
 
-	public QuestDialog setStackId(int stackId) {
+	public MessageDialog setStackId(int stackId) {
 		this.stackId = stackId;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class QuestDialog implements Cloneable {
 		return display;
 	}
 
-	public QuestDialog setDisplay(String display) {
+	public MessageDialog setDisplay(String display) {
 		this.display = display;
 		return this;
 	}
@@ -111,7 +111,7 @@ public class QuestDialog implements Cloneable {
 		return stack;
 	}
 
-	public void addCommand(QuestCommand command) {
+	public void addCommand(DialogCommand command) {
 		if (command == null)
 			return;
 		commands.add(command);
@@ -131,7 +131,7 @@ public class QuestDialog implements Cloneable {
 		return !id.isEmpty();
 	}
 
-	public QuestDialog setVisible(boolean visible) {
+	public MessageDialog setVisible(boolean visible) {
 		this.visible = visible;
 		return this;
 	}
@@ -147,8 +147,8 @@ public class QuestDialog implements Cloneable {
 	}
 
 	@Override
-	public QuestDialog clone() {
-		QuestDialog dialog = new QuestDialog(this.name);
+	public MessageDialog clone() {
+		MessageDialog dialog = new MessageDialog(this.name);
 		dialog.commands = new ArrayList<>();
 		this.commands.forEach(dialog.commands::add);
 		dialog.display = this.display;

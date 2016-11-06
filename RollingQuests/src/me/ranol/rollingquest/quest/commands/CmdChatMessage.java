@@ -5,7 +5,7 @@ import java.util.List;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.StringParser;
 
-public class CmdChatMessage implements QuestCommand {
+public class CmdChatMessage implements DialogCommand {
 	String msg;
 
 	@Override
@@ -15,7 +15,7 @@ public class CmdChatMessage implements QuestCommand {
 
 	@Override
 	public void activate(QuestMenu menu) {
-		menu.getPlayer().sendMessage(msg);
+		menu.getPlayer().sendMessage(DialogCommand.parse(msg, menu));
 	}
 
 }

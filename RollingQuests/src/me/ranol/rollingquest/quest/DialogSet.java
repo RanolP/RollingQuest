@@ -6,16 +6,16 @@ import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
-public class Quest implements Cloneable {
+public class DialogSet implements Cloneable {
 	private String questName;
-	private List<QuestDialog> dialogs = new ArrayList<>();
+	private List<MessageDialog> dialogs = new ArrayList<>();
 	private Npc giver;
 
-	public Quest(String name) {
+	public DialogSet(String name) {
 		this.questName = name;
 	}
 
-	public Quest setGiver(Npc npc) {
+	public DialogSet setGiver(Npc npc) {
 		this.giver = npc;
 		return this;
 	}
@@ -24,12 +24,12 @@ public class Quest implements Cloneable {
 		return giver;
 	}
 
-	public Quest addDialog(QuestDialog dialog) {
+	public DialogSet addDialog(MessageDialog dialog) {
 		dialogs.add(dialog);
 		return this;
 	}
 
-	public List<QuestDialog> getDialogs() {
+	public List<MessageDialog> getDialogs() {
 		return dialogs;
 	}
 
@@ -42,13 +42,17 @@ public class Quest implements Cloneable {
 		return "Quest [name=" + questName + ", " + dialogs.toString() + "]";
 	}
 
-	public QuestDialog getDialog(String name) {
-		QuestDialog result = null;
-		List<QuestDialog> filtered = dialogs.stream()
+	public MessageDialog getDialog(String name) {
+		MessageDialog result = null;
+		List<MessageDialog> filtered = dialogs.stream()
 				.filter(d -> d.getName().equals(name))
 				.collect(Collectors.toList());
 		if (filtered.size() > 0)
 			result = filtered.get(0);
 		return result;
+	}
+
+	public String getName() {
+		return questName;
 	}
 }

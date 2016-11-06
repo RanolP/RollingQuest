@@ -1,38 +1,14 @@
 package me.ranol.rollingquest;
 
 import me.ranol.rollingquest.menu.RealMenuListener;
-import me.ranol.rollingquest.quest.Npc;
-import me.ranol.rollingquest.quest.Quest;
-import me.ranol.rollingquest.quest.QuestDialog;
-import me.ranol.rollingquest.quest.commands.QuestCommand;
+import me.ranol.rollingquest.quest.commands.DialogCommand;
+import me.ranol.rollingquest.util.RYamlConfiguration;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RollingQuest extends JavaPlugin {
-	Npc npc = new Npc("Marc");
-	Quest quest = new Quest("Pizza").setGiver(npc);
-
-	void abc() {
-		QuestDialog first = new QuestDialog("marc1")
-				.setMessage("§f야, 나 §c배고파§f.").setDisplay("§aMarc와 대화하기")
-				.setSlot(20).setStackId(260).setVisible(true);
-		QuestDialog second = new QuestDialog("marc2")
-				.setMessage("§f여기 §c피자§f가 그렇게 맛있다면서?")
-				.setDisplay("§aMarc와 대화하기").setSlot(20).setStackId(260);
-		QuestDialog third = new QuestDialog("marc3")
-				.setMessage("§c피자 §e10개§f만 사 와.").setDisplay("§aMarc와 대화하기")
-				.setSlot(20).setStackId(260);
-		first.addCommand(QuestCommand.createCommand("show marc2"));
-		second.addCommand(QuestCommand.createCommand("show marc3"));
-		third.addCommand(QuestCommand.createCommand("close"));
-		quest.addDialog(first);
-		quest.addDialog(second);
-		quest.addDialog(third);
-	}
+	private static RYamlConfiguration config;
 
 	private static RollingQuest instance;
 
@@ -40,8 +16,32 @@ public class RollingQuest extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		Bukkit.getPluginManager().registerEvents(new RealMenuListener(), this);
-		QuestCommand.initialize();
-		abc();
+		DialogCommand.initialize();
+		if (!getDataFolder().exists()) {
+			saveResource("dialog-marc.yml", false);
+			saveResource("npc-marc.yml", false);
+			saveResource("quest-marc.yml", false);
+		}
+		saveDefaultConfig();
+		config = RYamlConfiguration.loadConfiguration(this, "config.yml");
+		DialogManager.loadDialogs();
+		NpcManager.loadNpcs();
+
+		CmdQuestlist questlist = new CmdQuestlist();
+		getCommand("questlist").setExecutor(questlist);
+		getCommand("questlist").setTabCompleter(questlist);
+
+		CmdNpclist npclist = new CmdNpclist();
+		getCommand("npclist").setExecutor(npclist);
+		getCommand("npclist").setTabCompleter(npclist);
+
+		CmdDialoglist dialoglist = new CmdDialoglist();
+		getCommand("dialoglist").setExecutor(dialoglist);
+		getCommand("dialoglist").setTabCompleter(dialoglist);
+
+		CmdQuestview questview = new CmdQuestview();
+		getCommand("questview").setExecutor(questview);
+		getCommand("questview").setTabCompleter(questview);
 	}
 
 	@Override
@@ -67,12 +67,11 @@ public class RollingQuest extends JavaPlugin {
 				run, delay);
 	}
 
-	@Override
-	public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
-		if (!(s instanceof Player))
-			return false;
-		s.sendMessage(quest.toString());
-		quest.openUI((Player) s);
-		return true;
+	public static boolean isLoggingLoad() {
+		return config.getBoolean("view-load", true);
+	}
+
+	public static int defaultItem() {
+		return config.getInt("default-item", 260);
 	}
 }

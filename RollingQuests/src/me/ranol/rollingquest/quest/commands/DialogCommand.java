@@ -6,8 +6,8 @@ import java.util.List;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.StringParser;
 
-public interface QuestCommand {
-	static final HashMap<String, Class<? extends QuestCommand>> commands = new HashMap<>();
+public interface DialogCommand {
+	static final HashMap<String, Class<? extends DialogCommand>> commands = new HashMap<>();
 
 	public static void initialize() {
 		register("show", CmdShow.class);
@@ -21,20 +21,25 @@ public interface QuestCommand {
 	}
 
 	public static void register(String name,
-			Class<? extends QuestCommand> command) {
+			Class<? extends DialogCommand> command) {
 		commands.put(name, command);
 	}
 
-	public static QuestCommand createCommand(String args) {
+	public static DialogCommand createCommand(String args) {
 		List<String> data = StringParser.parse(args);
 		if (data.size() == 0)
 			return null;
-		QuestCommand command = getCommand(data.get(0));
+		DialogCommand command = getCommand(data.get(0));
 		command.apply(data.subList(1, data.size()));
 		return command;
 	}
 
-	public static QuestCommand getCommand(String name) {
+	public static String parse(String real, QuestMenu menu) {
+		return real.replace("<player>", menu.getPlayer().getName()).replace(
+				"<npc>", menu.getQuest().getGiver().getVisibleName());
+	}
+
+	public static DialogCommand getCommand(String name) {
 		try {
 			return commands.get(name).newInstance();
 		} catch (Exception e) {

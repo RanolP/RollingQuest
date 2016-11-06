@@ -3,5 +3,11 @@ version: 1.0
 main: me.ranol.rollingquest.RollingQuest
 author: Ranol_
 commands:
-  rq:
-    description: "RollingQuests's Main Command"
+  npclist:
+    description: "View the registered npc list."
+  questlist:
+    description: "View the registered quest list."
+  dialoglist:
+    description: "View the registered dialog-set list."
+  questview:
+    description: "opening the quest inventory."
