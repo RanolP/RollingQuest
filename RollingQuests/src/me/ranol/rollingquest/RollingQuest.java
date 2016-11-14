@@ -26,6 +26,7 @@ public class RollingQuest extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new RealMenuListener(), this);
 		RollingCommand.initialize();
 		RollingModifier.initialize();
+		StaticEvents.initialize();
 		Language.initialize();
 		if (!getDataFolder().exists()) {
 			saveResource("dialog-marc.yml", false);

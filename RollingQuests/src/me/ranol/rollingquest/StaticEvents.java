@@ -6,12 +6,17 @@ import java.util.List;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 import me.ranol.rollingquest.menu.MenuClickEvent;
 
-public class StaticEvents {
+public class StaticEvents implements Listener {
 
 	static final HashMap<Class<?>, List<BindedEvent>> binds = new HashMap<>();
+
+	public static void initialize() {
+		RollingQuest.registerEvents(new StaticEvents());
+	}
 
 	public static <T extends Event> BindedEvent<T> bind(Class<T> clazz, EventFilter<T> filter, Runnable doRun) {
 		if (!binds.containsKey(clazz))
