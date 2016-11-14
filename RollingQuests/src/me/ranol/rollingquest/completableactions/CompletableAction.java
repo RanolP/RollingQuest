@@ -8,6 +8,7 @@ import org.bukkit.event.Event;
 
 import me.ranol.rollingquest.BindedEvent;
 import me.ranol.rollingquest.EventFilter;
+import me.ranol.rollingquest.PlayerRunnable;
 import me.ranol.rollingquest.quest.Quest;
 import me.ranol.rollingquest.util.StringParser;
 
@@ -15,6 +16,7 @@ public abstract class CompletableAction<T extends Event> implements EventFilter<
 	private static final HashMap<String, Class<? extends CompletableAction<?>>> modifiers = new HashMap<>();
 	private Quest quest;
 	private BindedEvent<T> event;
+	private List<PlayerRunnable> runnables;
 
 	public BindedEvent<T> getEvent() {
 		return event;
@@ -42,19 +44,18 @@ public abstract class CompletableAction<T extends Event> implements EventFilter<
 		modifiers.put(name, command);
 	}
 
-	public static CompletableAction<?> createComplete(String args, Quest quest) {
+	public static CompletableAction<?> createComplete(String args) {
 		List<String> data = StringParser.parse(args);
 		if (data.size() == 0)
 			return null;
-		CompletableAction<?> mod = getModifier(data.get(0));
-		if (mod != null)
+		CompletableAction<?> mod = getAction(data.get(0));
+		if (mod != null) {
 			mod.apply(data.subList(1, data.size()));
-		mod.bind(() -> quest.complete());
-		mod.setQuest(quest);
+		}
 		return mod;
 	}
 
-	public static CompletableAction<?> getModifier(String name) {
+	public static CompletableAction<?> getAction(String name) {
 		try {
 			return modifiers.get(name).newInstance();
 		} catch (Exception e) {
@@ -62,11 +63,20 @@ public abstract class CompletableAction<T extends Event> implements EventFilter<
 		}
 	}
 
-	public abstract CompletableAction<T> bind(Runnable doRun);
+	public abstract CompletableAction<T> bind();
 
 	public abstract String getString(Player p);
 
 	public abstract void apply(List<String> args);
 
 	public abstract void unbind();
+
+	public CompletableAction<?> bindPlayer(PlayerRunnable run) {
+		runnables.add(run);
+		return this;
+	}
+
+	public List<PlayerRunnable> getRunnables() {
+		return runnables;
+	}
 }

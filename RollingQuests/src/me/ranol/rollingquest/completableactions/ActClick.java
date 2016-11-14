@@ -10,8 +10,9 @@ import me.ranol.rollingquest.menu.MenuClickEvent;
 public class ActClick extends CompletableAction<MenuClickEvent> {
 
 	@Override
-	public ActClick bind(Runnable doRun) {
-		setEvent(StaticEvents.bind(MenuClickEvent.class, this, doRun));
+	public ActClick bind() {
+		setEvent(StaticEvents.bind(MenuClickEvent.class, this,
+				(event) -> getRunnables().forEach(run -> run.run((Player) event.getWhoClicked()))));
 		return this;
 	}
 

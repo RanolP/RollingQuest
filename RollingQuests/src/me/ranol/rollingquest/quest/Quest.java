@@ -19,6 +19,7 @@ public class Quest {
 	private int stackId;
 	private List<RollingModifier> modifiers = new ArrayList<>();
 	private CompletableAction<?> action;
+	private DialogSet set;
 
 	public Quest(String name) {
 		this.questName = name;
@@ -73,15 +74,23 @@ public class Quest {
 			modifiers.add(mod);
 	}
 
-	public void complete() {
-		
+	public void complete(Player completor) {
+		set.openUI(completor);
 	}
 
 	public Quest setCompleteAction(CompletableAction<?> action) {
-		if(this.action != null)
+		if (this.action != null)
 			this.action.unbind();
 		this.action = action;
-		
+
 		return this;
+	}
+
+	public void setDialog(DialogSet set) {
+		this.set = set;
+	}
+
+	public DialogSet setDialog() {
+		return set;
 	}
 }

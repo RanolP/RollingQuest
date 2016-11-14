@@ -33,7 +33,9 @@ public class QuestManager {
 			cfg.getStringList("modifiers").stream().map(RollingModifier::createModifier).collect(Collectors.toList())
 					.forEach(quest::addModifiers);
 			quest.setStackId(cfg.getInt("item", RollingQuest.defaultItem()));
-			quest.setCompleteAction(CompletableAction.createComplete(cfg.getString("item", "click"), quest));
+			quest.setCompleteAction(CompletableAction.createComplete(cfg.getString("complete-action", "click"))
+					.setQuest(quest).bindPlayer(quest::complete));
+			quest.setDialog(DialogManager.getDialogSet(cfg.getString("completion-dialog", "")));
 			quests.add(quest);
 			PlaceHolders.addHolder("<quest:" + quest.getName() + ">", quest.getDisplayName());
 			if (RollingQuest.isLoggingLoad()) {

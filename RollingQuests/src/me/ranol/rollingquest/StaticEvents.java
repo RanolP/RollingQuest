@@ -18,7 +18,7 @@ public class StaticEvents implements Listener {
 		RollingQuest.registerEvents(new StaticEvents());
 	}
 
-	public static <T extends Event> BindedEvent<T> bind(Class<T> clazz, EventFilter<T> filter, Runnable doRun) {
+	public static <T extends Event> BindedEvent<T> bind(Class<T> clazz, EventFilter<T> filter, EventRunnable<T> doRun) {
 		if (!binds.containsKey(clazz))
 			binds.put(clazz, new ArrayList<>());
 		BindedEvent<T> bind = new BindedEvent<>(filter, doRun);

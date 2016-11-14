@@ -4,16 +4,16 @@ import org.bukkit.event.Event;
 
 public class BindedEvent<T extends Event> {
 
-	Runnable run;
+	EventRunnable<T> run;
 	EventFilter<T> filter;
 
-	public BindedEvent(EventFilter<T> filter, Runnable toRun) {
+	public BindedEvent(EventFilter<T> filter, EventRunnable<T> toRun) {
 		this.filter = filter;
 		this.run = toRun;
 	}
 
-	public void run() {
-		run.run();
+	public void run(T event) {
+		run.run(event);
 	}
 
 	public boolean matched(T event) {
@@ -23,7 +23,7 @@ public class BindedEvent<T extends Event> {
 	public boolean matchedRun(T event) {
 		boolean run;
 		if (run = matched(event))
-			run();
+			run(event);
 		return run;
 	}
 }
