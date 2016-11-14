@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.StringParser;
 
-public class CmdIssueCommand implements DialogCommand {
+public class CmdIssueCommand implements RollingCommand {
 	String cmd;
 
 	@Override
@@ -17,7 +17,7 @@ public class CmdIssueCommand implements DialogCommand {
 
 	@Override
 	public void activate(QuestMenu menu) {
-		Bukkit.dispatchCommand(menu.getPlayer(), DialogCommand.parse(cmd, menu));
+		Bukkit.dispatchCommand(menu.getPlayer(), menu.parse(cmd));
 	}
 
 }

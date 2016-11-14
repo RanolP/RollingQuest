@@ -6,8 +6,8 @@ import java.util.List;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.StringParser;
 
-public interface DialogCommand {
-	static final HashMap<String, Class<? extends DialogCommand>> commands = new HashMap<>();
+public interface RollingCommand {
+	static final HashMap<String, Class<? extends RollingCommand>> commands = new HashMap<>();
 
 	public static void initialize() {
 		register("show", CmdShow.class);
@@ -18,28 +18,24 @@ public interface DialogCommand {
 		register("cmdop", CmdIssueCommandOp.class);
 		register("cmdcon", CmdIssueCommandConsole.class);
 		register("tp", CmdTeleport.class);
+		register("gquest", CmdGiveQuest.class);
 	}
 
-	public static void register(String name,
-			Class<? extends DialogCommand> command) {
+	public static void register(String name, Class<? extends RollingCommand> command) {
 		commands.put(name, command);
 	}
 
-	public static DialogCommand createCommand(String args) {
+	public static RollingCommand createCommand(String args) {
 		List<String> data = StringParser.parse(args);
 		if (data.size() == 0)
 			return null;
-		DialogCommand command = getCommand(data.get(0));
-		command.apply(data.subList(1, data.size()));
+		RollingCommand command = getCommand(data.get(0));
+		if (command != null)
+			command.apply(data.subList(1, data.size()));
 		return command;
 	}
 
-	public static String parse(String real, QuestMenu menu) {
-		return real.replace("<player>", menu.getPlayer().getName()).replace(
-				"<npc>", menu.getQuest().getGiver().getVisibleName());
-	}
-
-	public static DialogCommand getCommand(String name) {
+	public static RollingCommand getCommand(String name) {
 		try {
 			return commands.get(name).newInstance();
 		} catch (Exception e) {

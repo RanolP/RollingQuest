@@ -5,7 +5,7 @@ import java.util.List;
 import me.ranol.rollingquest.quest.MessageDialog;
 import me.ranol.rollingquest.quest.QuestMenu;
 
-public class CmdShow implements DialogCommand {
+public class CmdShow implements RollingCommand {
 	String dialog;
 
 	@Override

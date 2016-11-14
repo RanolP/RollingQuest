@@ -2,12 +2,11 @@ package me.ranol.rollingquest.menu;
 
 import java.util.UUID;
 
-import me.ranol.rollingquest.RollingQuest;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
+import me.ranol.rollingquest.RollingQuest;
 
 public class Menu {
 	UUID uuid;
@@ -48,7 +47,7 @@ public class Menu {
 		return inventory;
 	}
 
-	public void onClick(InventoryClickEvent e) {
+	public void onClick(MenuClickEvent e) {
 
 	}
 

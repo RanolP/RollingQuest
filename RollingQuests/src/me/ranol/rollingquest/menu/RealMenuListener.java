@@ -1,5 +1,6 @@
 package me.ranol.rollingquest.menu;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +12,9 @@ public class RealMenuListener implements Listener {
 	public void onClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
 		if (MenuAPI.isMenuOpened(p)) {
-			MenuAPI.getOpenedMenu(p).onClick(e);
+			MenuClickEvent click = new MenuClickEvent(MenuAPI.getOpenedMenu(p), e);
+			MenuAPI.getOpenedMenu(p).onClick(click);
+			Bukkit.getPluginManager().callEvent(click);
 		}
 	}
 

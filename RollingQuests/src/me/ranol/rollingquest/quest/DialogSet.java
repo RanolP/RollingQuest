@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 
 public class DialogSet implements Cloneable {
-	private String questName;
+	private String setName;
 	private List<MessageDialog> dialogs = new ArrayList<>();
 	private Npc giver;
 
 	public DialogSet(String name) {
-		this.questName = name;
+		this.setName = name;
 	}
 
 	public DialogSet setGiver(Npc npc) {
@@ -39,13 +39,12 @@ public class DialogSet implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Quest [name=" + questName + ", " + dialogs.toString() + "]";
+		return "DialogSet [name=" + getName() + ", " + dialogs.toString() + "]";
 	}
 
 	public MessageDialog getDialog(String name) {
 		MessageDialog result = null;
-		List<MessageDialog> filtered = dialogs.stream()
-				.filter(d -> d.getName().equals(name))
+		List<MessageDialog> filtered = dialogs.stream().filter(d -> d.getName().equals(name))
 				.collect(Collectors.toList());
 		if (filtered.size() > 0)
 			result = filtered.get(0);
@@ -53,6 +52,6 @@ public class DialogSet implements Cloneable {
 	}
 
 	public String getName() {
-		return questName;
+		return setName;
 	}
 }

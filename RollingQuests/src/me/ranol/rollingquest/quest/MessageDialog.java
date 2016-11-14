@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.ranol.rollingquest.RollingQuest;
-import me.ranol.rollingquest.quest.commands.DialogCommand;
+import me.ranol.rollingquest.quest.commands.RollingCommand;
 import me.ranol.rollingquest.util.WordManager;
 import me.ranol.rollingquest.util.Wrap;
 
@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class MessageDialog implements Cloneable {
-	private String msg;
+	private String msg = "";
 	private int slot;
 	private int stackId;
 	private String display;
@@ -21,7 +21,7 @@ public class MessageDialog implements Cloneable {
 	private boolean visible = false;
 	private final String name;
 	private Wrap<Boolean> skip = Wrap.empty(false);
-	private ArrayList<DialogCommand> commands = new ArrayList<DialogCommand>();
+	private ArrayList<RollingCommand> commands = new ArrayList<RollingCommand>();
 
 	public MessageDialog(String name) {
 		this.name = name;
@@ -71,7 +71,7 @@ public class MessageDialog implements Cloneable {
 	public void visible(QuestMenu menu) {
 		if (isVisible()) {
 			Wrap<Integer> index = Wrap.empty(0);
-			List<String> words = WordManager.typingAll(msg, true);
+			List<String> words = WordManager.typingAll(menu.parse(msg), true);
 			id.set(RollingQuest.addRepeatingTask(() -> {
 				if (!skip.isEmpty() && skip.get()) {
 					RollingQuest.cancelTask(id.get());
@@ -82,7 +82,7 @@ public class MessageDialog implements Cloneable {
 					menu.getPlayer().updateInventory();
 					return;
 				}
-				if (words.size() - 1 <= index.get()) {
+				if (words.size() <= index.get()) {
 					RollingQuest.cancelTask(id.get());
 					id.toEmpty();
 					return;
@@ -103,6 +103,7 @@ public class MessageDialog implements Cloneable {
 	}
 
 	private ItemStack getItemStack(String... lores) {
+		@SuppressWarnings("deprecation")
 		ItemStack stack = new ItemStack(stackId);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName(display);
@@ -111,16 +112,13 @@ public class MessageDialog implements Cloneable {
 		return stack;
 	}
 
-	public void addCommand(DialogCommand command) {
-		if (command == null)
-			return;
-		commands.add(command);
+	public void addCommand(RollingCommand command) {
+		if (command != null)
+			commands.add(command);
 	}
 
 	public void activate(QuestMenu menu) {
-		System.out.println(toString() + " 호출됨.");
-		RollingQuest.addDelayedTask(
-				() -> commands.forEach(c -> c.activate(menu)), 1);
+		RollingQuest.addDelayedTask(() -> commands.forEach(c -> c.activate(menu)), 1);
 	}
 
 	public boolean isVisible() {

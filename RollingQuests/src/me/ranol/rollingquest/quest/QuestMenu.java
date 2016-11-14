@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import me.ranol.rollingquest.menu.Menu;
-import me.ranol.rollingquest.menu.MenuCloseEvent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import me.ranol.rollingquest.menu.Menu;
+import me.ranol.rollingquest.menu.MenuClickEvent;
+import me.ranol.rollingquest.menu.MenuCloseEvent;
+import me.ranol.rollingquest.util.PlaceHolders;
 
 public class QuestMenu extends Menu {
 	DialogSet quest;
@@ -37,11 +38,9 @@ public class QuestMenu extends Menu {
 	}
 
 	@Override
-	public void onClick(InventoryClickEvent e) {
-		getPlayer().sendMessage(allDialogs.toString());
+	public void onClick(MenuClickEvent e) {
 		e.setCancelled(true);
-		List<MessageDialog> collected = allDialogs.stream()
-				.filter(d -> d.getSlot() == e.getSlot() && d.isVisible())
+		List<MessageDialog> collected = allDialogs.stream().filter(d -> d.getSlot() == e.getSlot() && d.isVisible())
 				.collect(Collectors.toList());
 		if (collected.size() <= 0)
 			return;
@@ -58,12 +57,9 @@ public class QuestMenu extends Menu {
 		if (!super.open())
 			return false;
 		String title = "§1Quests§f| §2" + quest.getGiver().getVisibleName();
-		setInventory(Bukkit.createInventory(null, 9 * 4,
-				title.length() >= 30 ? title.substring(0, 30) + ".." : title));
-		quest.getDialogs().stream().map(d -> d.clone())
-				.forEach(allDialogs::add);
-		allDialogs.stream().filter(d -> d.isVisible())
-				.forEach(this::enableDialog);
+		setInventory(Bukkit.createInventory(null, 9 * 4, title.length() >= 30 ? title.substring(0, 30) + ".." : title));
+		quest.getDialogs().stream().map(d -> d.clone()).forEach(allDialogs::add);
+		allDialogs.stream().filter(d -> d.isVisible()).forEach(this::enableDialog);
 		getPlayer().openInventory(getInventory());
 		return true;
 	}
@@ -75,8 +71,7 @@ public class QuestMenu extends Menu {
 
 	public MessageDialog getDialog(String name) {
 		MessageDialog result = null;
-		List<MessageDialog> filtered = allDialogs.stream()
-				.filter(d -> d.getName().equals(name))
+		List<MessageDialog> filtered = allDialogs.stream().filter(d -> d.getName().equals(name))
 				.collect(Collectors.toList());
 		if (filtered.size() > 0)
 			result = filtered.get(0);
@@ -84,11 +79,15 @@ public class QuestMenu extends Menu {
 	}
 
 	public List<MessageDialog> getDialogs(int slot) {
-		return allDialogs.stream().filter(d -> d.getSlot() == slot)
-				.collect(Collectors.toList());
+		return allDialogs.stream().filter(d -> d.getSlot() == slot).collect(Collectors.toList());
 	}
 
 	public void disableDialogs(List<MessageDialog> dialogs) {
 		dialogs.forEach(this::disableDialog);
+	}
+
+	public String parse(String msg) {
+		return PlaceHolders.replaceAll(
+				msg.replace("<player>", getPlayer().getName()).replace("<npc>", quest.getGiver().getVisibleName()));
 	}
 }

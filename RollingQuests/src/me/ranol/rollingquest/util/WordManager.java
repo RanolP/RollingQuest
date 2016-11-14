@@ -30,8 +30,7 @@ public class WordManager {
 		for (int i = 0; i < real.length(); i++) {
 			String get = real.substring(i, i + 1);
 			if (get.matches("[가-힣]") && smoothKorea) {
-				toType(get.charAt(0)).stream().map(s -> now + s)
-						.forEach(texts::add);
+				toType(get.charAt(0)).stream().map(s -> now + s).forEach(texts::add);
 				now.delete(0, now.length());
 				now.append(texts.get(texts.size() - 1));
 			} else if (get.equals("§") || get.equals(" ")) {
@@ -103,8 +102,8 @@ public class WordManager {
 	}
 
 	private static char craft(char 초, char 중, char 종) {
-		return (char) (44032 + (ArrayUtils.indexOf(초성, 초) * 588)
-				+ (ArrayUtils.indexOf(중성, 중) * 28) + (ArrayUtils.indexOf(종성, 종)));
+		return (char) (44032 + (ArrayUtils.indexOf(초성, 초) * 588) + (ArrayUtils.indexOf(중성, 중) * 28)
+				+ (ArrayUtils.indexOf(종성, 종)));
 	}
 
 	private static char[] uncraft(char all) {

@@ -1,5 +1,5 @@
 Pizza1:
-  text: "§f<player>야"
+  text: "§e올ㅋ 이거 §c도☆노 피자 §e아니냐?"
   slot: 20
   item: 260
   display: "§aMarc와 대화하기."
@@ -7,7 +7,7 @@ Pizza1:
   commands:
     - show Pizza2
 Pizza2:
-  text: "§f내가 지금 §c피자가 먹고싶구나."
+  text: "§a욜 10개 모아왔네?"
   slot: 20
   item: 260
   display: "§aMarc와 대화하기."
@@ -15,12 +15,12 @@ Pizza2:
   commands:
     - show Pizza3
 Pizza3:
-  text: "§c피자§f를 §e10판§f정도만 사오지 않겠니?"
+  text: "§a보상줄까? 낄낄"
   slot: 20
   item: 260
-  display: "§aMarc와 대화하기."
+  display: "§a보상 받기"
   visible: false
   commands:
-    - gquest Marc_Pizza
-    - chat '§a☆ 퀘스트 <quest:Marc_Pizza>§a를 받았습니다!'
+    - cmd '/give <player> diamond 64'
+    - chat '§b다이아몬드를 받았습니다!'
     - close
