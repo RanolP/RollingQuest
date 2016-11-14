@@ -7,10 +7,10 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import me.ranol.rollingquest.BindedEvent;
-import me.ranol.rollingquest.EventFilter;
-import me.ranol.rollingquest.PlayerRunnable;
 import me.ranol.rollingquest.completableactions.ActClick;
+import me.ranol.rollingquest.events.BindedEvent;
+import me.ranol.rollingquest.events.EventFilter;
+import me.ranol.rollingquest.util.PlayerRunnable;
 import me.ranol.rollingquest.util.StringParser;
 
 public abstract class RollingAction<T extends Event> implements EventFilter<T> {

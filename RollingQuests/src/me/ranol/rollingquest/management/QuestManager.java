@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
+import me.ranol.rollingquest.PlayerData;
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.api.Quest;
 import me.ranol.rollingquest.api.RollingAction;
@@ -25,8 +26,11 @@ public class QuestManager {
 
 	private static List<Quest> quests = new ArrayList<>();
 	private static HashMap<UUID, List<Quest>> hasQuests = new HashMap<>();
+	private static PlayerData data;
 
 	public static void loadQuests() {
+		data = new PlayerData("playerData.ser");
+		data.load();
 		File[] questFiles = RollingQuest.getInstance().getDataFolder()
 				.listFiles(f -> f.isFile() && f.getName().startsWith("quest"));
 		for (File file : questFiles) {
@@ -49,6 +53,18 @@ public class QuestManager {
 				Util.con("퀘스트 \'" + quest.getName() + "\'을(를) 로드하였습니다.");
 			}
 		}
+		data.questMap().forEach((uid, list) -> {
+			list.forEach(name -> {
+				try {
+					if (!hasQuests.containsKey(uid))
+						hasQuests.put(uid, new ArrayList<>());
+					hasQuests.get(uid).removeIf(q -> name.equals(q.getName()));
+					Quest q = getQuest(name);
+					hasQuests.get(uid).add(q);
+				} catch (UnknownQuestException e) {
+				}
+			});
+		});
 	}
 
 	public static List<Quest> getQuests() {
@@ -72,6 +88,7 @@ public class QuestManager {
 		Quest quest = getQuest(name);
 		if (quest != null)
 			hasQuests.get(p.getUniqueId()).remove(quest);
+		data.takeQuest(p, name);
 	}
 
 	public static boolean availableQuest(String name) {
@@ -90,5 +107,6 @@ public class QuestManager {
 		Quest quest = getQuest(name);
 		quest.setGiver(npc);
 		hasQuests.get(p.getUniqueId()).add(quest);
+		data.giveQuest(p, name);
 	}
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import me.ranol.rollingquest.StaticEvents;
 import me.ranol.rollingquest.api.RollingAction;
+import me.ranol.rollingquest.events.StaticEvents;
 import me.ranol.rollingquest.menu.MenuClickEvent;
 
 public class ActClick extends RollingAction<MenuClickEvent> {

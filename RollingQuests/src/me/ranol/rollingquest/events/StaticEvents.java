@@ -1,4 +1,4 @@
-package me.ranol.rollingquest;
+package me.ranol.rollingquest.events;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.menu.MenuClickEvent;
 
 public class StaticEvents implements Listener {

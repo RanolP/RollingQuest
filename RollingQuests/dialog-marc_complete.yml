@@ -21,6 +21,6 @@ Pizza3:
   display: "§a보상 받기"
   visible: false
   commands:
-    - cmd '/give <player> diamond 64'
+    - cmdcon 'give <player> diamond 64'
     - chat '§b다이아몬드를 받았습니다!'
     - close

@@ -1,4 +1,4 @@
-package me.ranol.rollingquest;
+package me.ranol.rollingquest.util;
 
 import org.bukkit.entity.Player;
 

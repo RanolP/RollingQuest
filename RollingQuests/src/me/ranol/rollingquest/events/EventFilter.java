@@ -1,4 +1,4 @@
-package me.ranol.rollingquest;
+package me.ranol.rollingquest.events;
 
 import org.bukkit.event.Event;
 

@@ -9,6 +9,7 @@ import me.ranol.rollingquest.api.RollingCommand;
 import me.ranol.rollingquest.commands.CmdQuestview;
 import me.ranol.rollingquest.commands.CmdRollingQuestAdmin;
 import me.ranol.rollingquest.commands.CmdRollingQuestUser;
+import me.ranol.rollingquest.events.StaticEvents;
 import me.ranol.rollingquest.management.DialogManager;
 import me.ranol.rollingquest.management.NpcManager;
 import me.ranol.rollingquest.management.QuestManager;
