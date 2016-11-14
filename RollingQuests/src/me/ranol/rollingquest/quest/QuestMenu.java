@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import me.ranol.rollingquest.api.DialogSet;
+import me.ranol.rollingquest.api.MessageDialog;
 import me.ranol.rollingquest.menu.Menu;
 import me.ranol.rollingquest.menu.MenuClickEvent;
 import me.ranol.rollingquest.menu.MenuCloseEvent;

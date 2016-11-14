@@ -1,6 +1,7 @@
 package me.ranol.rollingquest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class StaticEvents implements Listener {
 	}
 
 	public List<BindedEvent> getRunnables(Class<? extends Event> clazz) {
-		return binds.get(clazz);
+		return binds.containsKey(clazz) ? binds.get(clazz) : Collections.emptyList();
 	}
 
 	@EventHandler

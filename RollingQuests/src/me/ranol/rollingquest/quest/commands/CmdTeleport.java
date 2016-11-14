@@ -2,6 +2,7 @@ package me.ranol.rollingquest.quest.commands;
 
 import java.util.List;
 
+import me.ranol.rollingquest.api.RollingCommand;
 import me.ranol.rollingquest.quest.QuestMenu;
 
 import org.bukkit.Location;

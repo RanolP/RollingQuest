@@ -1,2 +1,4 @@
 name: Marc
-dialog-set: marc
+has-dialogs:
+  - marc
+  - marc_complete

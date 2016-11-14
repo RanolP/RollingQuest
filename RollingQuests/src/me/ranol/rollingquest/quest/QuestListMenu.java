@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import me.ranol.rollingquest.api.Quest;
 import me.ranol.rollingquest.management.QuestManager;
+import me.ranol.rollingquest.menu.MenuClickEvent;
 import me.ranol.rollingquest.menu.PageMenu;
 
 public class QuestListMenu extends PageMenu<Quest> {
@@ -13,6 +15,11 @@ public class QuestListMenu extends PageMenu<Quest> {
 		super(opener);
 		start = 0;
 		end = 27;
+	}
+
+	@Override
+	public void onClick(MenuClickEvent e) {
+		e.setCancelled(true);
 	}
 
 	@Override

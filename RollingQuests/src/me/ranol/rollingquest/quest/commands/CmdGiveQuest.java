@@ -2,6 +2,8 @@ package me.ranol.rollingquest.quest.commands;
 
 import java.util.List;
 
+import me.ranol.rollingquest.api.RollingCommand;
+import me.ranol.rollingquest.exceptions.UnknownQuestException;
 import me.ranol.rollingquest.management.QuestManager;
 import me.ranol.rollingquest.quest.QuestMenu;
 
@@ -15,8 +17,9 @@ public class CmdGiveQuest implements RollingCommand {
 
 	@Override
 	public void activate(QuestMenu menu) {
-		if (QuestManager.availableQuest(questName)) {
-			QuestManager.giveQuest(menu.getPlayer(), questName);
+		try {
+			QuestManager.giveQuest(menu.getPlayer(), questName, menu.getQuest().getGiver());
+		} catch (UnknownQuestException e) {
 		}
 	}
 

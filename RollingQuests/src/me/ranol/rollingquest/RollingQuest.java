@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.ranol.rollingquest.api.RollingAction;
+import me.ranol.rollingquest.api.RollingCommand;
 import me.ranol.rollingquest.commands.CmdQuestview;
 import me.ranol.rollingquest.commands.CmdRollingQuestAdmin;
 import me.ranol.rollingquest.commands.CmdRollingQuestUser;
@@ -11,7 +13,6 @@ import me.ranol.rollingquest.management.DialogManager;
 import me.ranol.rollingquest.management.NpcManager;
 import me.ranol.rollingquest.management.QuestManager;
 import me.ranol.rollingquest.menu.RealMenuListener;
-import me.ranol.rollingquest.quest.commands.RollingCommand;
 import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.RYamlConfiguration;
 
@@ -26,10 +27,12 @@ public class RollingQuest extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new RealMenuListener(), this);
 		RollingCommand.initialize();
 		RollingModifier.initialize();
+		RollingAction.initialize();
 		StaticEvents.initialize();
 		Language.initialize();
 		if (!getDataFolder().exists()) {
 			saveResource("dialog-marc.yml", false);
+			saveResource("dialog-marc_complete.yml", false);
 			saveResource("npc-marc.yml", false);
 			saveResource("quest-marc.yml", false);
 		}

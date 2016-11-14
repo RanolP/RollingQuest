@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import me.ranol.rollingquest.RollingQuest;
+import me.ranol.rollingquest.exceptions.UnknownDialogException;
+import me.ranol.rollingquest.exceptions.UnknownNpcException;
 import me.ranol.rollingquest.quest.Npc;
 import me.ranol.rollingquest.util.RYamlConfiguration;
 import me.ranol.rollingquest.util.Util;
 
 public class NpcManager {
+	public static final Npc UNNAMED = new Npc("RollingQuest_UnnamedNpc").setVisibleName("Unnamed");
 	private static List<Npc> npcs = new ArrayList<>();
 
 	public static void loadNpcs() {
@@ -20,7 +23,15 @@ public class NpcManager {
 			RYamlConfiguration cfg = RYamlConfiguration.loadConfiguration(file);
 			Npc npc = new Npc(file.getName().substring(0, file.getName().lastIndexOf(".")).replaceFirst("npc[-]?", ""));
 			npc.setVisibleName(cfg.getString("name", npc.getName()));
-			npc.setDialogSet(DialogManager.getDialogSet(cfg.getString("dialog-set")));
+			List<String> hasDialogs = cfg.getStringList("has-dialogs");
+			hasDialogs.forEach(s -> {
+				try {
+					npc.addDialogSet(DialogManager.getDialogSet(s));
+				} catch (UnknownDialogException e) {
+					Util.warn("Npc §f" + npc.getName() + " (" + npc.getVisibleName() + ") §r에서 알 수 없는 다이얼로그 " + s
+							+ "를 로드했습니다.");
+				}
+			});
 			npcs.add(npc);
 			if (RollingQuest.isLoggingLoad()) {
 				Util.con("NPC \'" + npc.getName() + "\'을(를) 로드하였습니다.");
@@ -32,9 +43,11 @@ public class NpcManager {
 		return npcs;
 	}
 
-	public static Npc getNpc(String name) {
+	public static Npc getNpc(String name) throws UnknownNpcException {
 		List<Npc> filtered = npcs.stream().filter(npc -> npc.getName().equals(name)).collect(Collectors.toList());
-		return filtered.isEmpty() ? null : filtered.get(0);
+		if (filtered.isEmpty())
+			throw new UnknownNpcException("Npc " + name + " is not exists.");
+		return filtered.get(0);
 	}
 
 	public static boolean availableNpc(String name) {

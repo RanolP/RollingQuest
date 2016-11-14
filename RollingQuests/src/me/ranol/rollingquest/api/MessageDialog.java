@@ -1,11 +1,11 @@
-package me.ranol.rollingquest.quest;
+package me.ranol.rollingquest.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import me.ranol.rollingquest.RollingQuest;
-import me.ranol.rollingquest.quest.commands.RollingCommand;
+import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.WordManager;
 import me.ranol.rollingquest.util.Wrap;
 

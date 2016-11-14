@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import me.ranol.rollingquest.RollingQuest;
-import me.ranol.rollingquest.quest.DialogSet;
-import me.ranol.rollingquest.quest.MessageDialog;
-import me.ranol.rollingquest.quest.commands.RollingCommand;
+import me.ranol.rollingquest.api.DialogSet;
+import me.ranol.rollingquest.api.MessageDialog;
+import me.ranol.rollingquest.api.RollingCommand;
+import me.ranol.rollingquest.exceptions.UnknownDialogException;
 import me.ranol.rollingquest.util.RYamlConfiguration;
 import me.ranol.rollingquest.util.Util;
 
@@ -37,6 +38,7 @@ public class DialogManager {
 				});
 				set.addDialog(dialog);
 			});
+			set.setGiver(NpcManager.UNNAMED);
 			dialogs.add(set);
 			if (RollingQuest.isLoggingLoad()) {
 				Util.con("다이얼로그 \'" + set.getName() + "\'을(를) 로드하였습니다.");
@@ -48,8 +50,10 @@ public class DialogManager {
 		return dialogs;
 	}
 
-	public static DialogSet getDialogSet(String name) {
+	public static DialogSet getDialogSet(String name) throws UnknownDialogException {
 		List<DialogSet> filtered = dialogs.stream().filter(d -> d.getName().equals(name)).collect(Collectors.toList());
-		return filtered.size() > 0 ? filtered.get(0) : null;
+		if (filtered.isEmpty())
+			throw new UnknownDialogException("Dialog " + name + " is not exists.");
+		return filtered.get(0);
 	}
 }

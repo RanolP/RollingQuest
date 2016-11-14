@@ -1,4 +1,4 @@
-package me.ranol.rollingquest.quest;
+package me.ranol.rollingquest.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.ranol.rollingquest.completableactions.CompletableAction;
+import me.ranol.rollingquest.RollingQuest;
+import me.ranol.rollingquest.quest.Npc;
 import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.PlaceHolders;
 
@@ -18,11 +19,20 @@ public class Quest {
 	private String displayName;
 	private int stackId;
 	private List<RollingModifier> modifiers = new ArrayList<>();
-	private CompletableAction<?> action;
+	private RollingAction<?> action;
 	private DialogSet set;
+	private Npc giver;
 
 	public Quest(String name) {
 		this.questName = name;
+	}
+
+	public void setGiver(Npc npc) {
+		this.giver = npc;
+	}
+
+	public Npc getGiver() {
+		return giver;
 	}
 
 	public String getName() {
@@ -59,7 +69,10 @@ public class Quest {
 		ItemStack stack = new ItemStack(stackId);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName(getDisplayName());
-		meta.setLore(modifiers.stream().map(mod -> modifierize(mod, p)).collect(Collectors.toList()));
+		List<String> lores = modifiers.stream().map(mod -> modifierize(mod, p)).collect(Collectors.toList());
+		if (action != null && canComplete(p))
+			lores.add(action.getString(p));
+		meta.setLore(lores);
 		stack.setItemMeta(meta);
 		return stack;
 	}
@@ -69,16 +82,21 @@ public class Quest {
 	}
 
 	public void addModifiers(RollingModifier mod) {
-		System.out.println(mod);
 		if (mod != null)
 			modifiers.add(mod);
 	}
 
-	public void complete(Player completor) {
-		set.openUI(completor);
+	public boolean canComplete(Player p) {
+		return getModifiers().stream().filter(mod -> !mod.activate(p)).count() <= 0;
 	}
 
-	public Quest setCompleteAction(CompletableAction<?> action) {
+	public void complete(Player completor) {
+		if (canComplete(completor)) {
+			RollingQuest.addDelayedTask(() -> set.openUI(completor), 1);
+		}
+	}
+
+	public Quest setCompleteAction(RollingAction<?> action) {
 		if (this.action != null)
 			this.action.unbind();
 		this.action = action;
@@ -86,11 +104,11 @@ public class Quest {
 		return this;
 	}
 
-	public void setDialog(DialogSet set) {
+	public void setDialogSet(DialogSet set) {
 		this.set = set;
 	}
 
-	public DialogSet setDialog() {
+	public DialogSet getDialogSet() {
 		return set;
 	}
 }

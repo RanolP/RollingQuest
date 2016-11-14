@@ -1,9 +1,19 @@
-package me.ranol.rollingquest.quest.commands;
+package me.ranol.rollingquest.api;
 
 import java.util.HashMap;
 import java.util.List;
 
 import me.ranol.rollingquest.quest.QuestMenu;
+import me.ranol.rollingquest.quest.commands.CmdChatMessage;
+import me.ranol.rollingquest.quest.commands.CmdCloseInv;
+import me.ranol.rollingquest.quest.commands.CmdGiveQuest;
+import me.ranol.rollingquest.quest.commands.CmdHide;
+import me.ranol.rollingquest.quest.commands.CmdIssueCommand;
+import me.ranol.rollingquest.quest.commands.CmdIssueCommandConsole;
+import me.ranol.rollingquest.quest.commands.CmdIssueCommandOp;
+import me.ranol.rollingquest.quest.commands.CmdOpenSet;
+import me.ranol.rollingquest.quest.commands.CmdShow;
+import me.ranol.rollingquest.quest.commands.CmdTeleport;
 import me.ranol.rollingquest.util.StringParser;
 
 public interface RollingCommand {
@@ -19,6 +29,7 @@ public interface RollingCommand {
 		register("cmdcon", CmdIssueCommandConsole.class);
 		register("tp", CmdTeleport.class);
 		register("gquest", CmdGiveQuest.class);
+		register("openset", CmdOpenSet.class);
 	}
 
 	public static void register(String name, Class<? extends RollingCommand> command) {

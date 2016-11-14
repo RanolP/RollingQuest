@@ -1,10 +1,13 @@
-package me.ranol.rollingquest.quest;
+package me.ranol.rollingquest.api;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
+
+import me.ranol.rollingquest.quest.Npc;
+import me.ranol.rollingquest.quest.QuestMenu;
 
 public class DialogSet implements Cloneable {
 	private String setName;

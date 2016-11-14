@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 
+import me.ranol.rollingquest.api.RollingCommand;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.util.StringParser;
 

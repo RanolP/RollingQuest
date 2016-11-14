@@ -5,9 +5,10 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import me.ranol.rollingquest.StaticEvents;
+import me.ranol.rollingquest.api.RollingAction;
 import me.ranol.rollingquest.menu.MenuClickEvent;
 
-public class ActClick extends CompletableAction<MenuClickEvent> {
+public class ActClick extends RollingAction<MenuClickEvent> {
 
 	@Override
 	public ActClick bind() {
@@ -18,7 +19,7 @@ public class ActClick extends CompletableAction<MenuClickEvent> {
 
 	@Override
 	public String getString(Player p) {
-		return "§a>> §e아이템§a을 클릭하세요 <<";
+		return "§a>> §e아이템§a을 클릭하여 완료합니다. <<";
 	}
 
 	@Override

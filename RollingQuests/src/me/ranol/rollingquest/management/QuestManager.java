@@ -11,8 +11,11 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 
 import me.ranol.rollingquest.RollingQuest;
-import me.ranol.rollingquest.completableactions.CompletableAction;
-import me.ranol.rollingquest.quest.Quest;
+import me.ranol.rollingquest.api.Quest;
+import me.ranol.rollingquest.api.RollingAction;
+import me.ranol.rollingquest.exceptions.UnknownDialogException;
+import me.ranol.rollingquest.exceptions.UnknownQuestException;
+import me.ranol.rollingquest.quest.Npc;
 import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.PlaceHolders;
 import me.ranol.rollingquest.util.RYamlConfiguration;
@@ -33,9 +36,13 @@ public class QuestManager {
 			cfg.getStringList("modifiers").stream().map(RollingModifier::createModifier).collect(Collectors.toList())
 					.forEach(quest::addModifiers);
 			quest.setStackId(cfg.getInt("item", RollingQuest.defaultItem()));
-			quest.setCompleteAction(CompletableAction.createComplete(cfg.getString("complete-action", "click"))
-					.setQuest(quest).bindPlayer(quest::complete));
-			quest.setDialog(DialogManager.getDialogSet(cfg.getString("completion-dialog", "")));
+			quest.setCompleteAction(RollingAction.createComplete(cfg.getString("complete-action", "click"), quest));
+			String dialog = cfg.getString("completion-dialog", "");
+			try {
+				quest.setDialogSet(DialogManager.getDialogSet(dialog));
+			} catch (UnknownDialogException e) {
+
+			}
 			quests.add(quest);
 			PlaceHolders.addHolder("<quest:" + quest.getName() + ">", quest.getDisplayName());
 			if (RollingQuest.isLoggingLoad()) {
@@ -48,21 +55,18 @@ public class QuestManager {
 		return quests;
 	}
 
-	public static Quest getQuest(String name) {
+	public static Quest getQuest(String name) throws UnknownQuestException {
 		List<Quest> filtered = quests.stream().filter(npc -> npc.getName().equals(name)).collect(Collectors.toList());
-		return filtered.isEmpty() ? null : filtered.get(0);
+		if (filtered.isEmpty())
+			throw new UnknownQuestException("Quest " + name + " is not exists.");
+		return filtered.get(0);
 	}
 
-	public static void giveQuest(Player p, String name) {
-		if (!hasQuests.containsKey(p.getUniqueId()))
-			hasQuests.put(p.getUniqueId(), new ArrayList<>());
-		hasQuests.get(p.getUniqueId()).removeIf(q -> name.equals(q.getName()));
-		Quest quest = getQuest(name);
-		if (quest != null)
-			hasQuests.get(p.getUniqueId()).add(quest);
+	public static void giveQuest(Player p, String name) throws UnknownQuestException {
+		giveQuest(p, name, NpcManager.UNNAMED);
 	}
 
-	public static void takeQuest(Player p, String name) {
+	public static void takeQuest(Player p, String name) throws UnknownQuestException {
 		if (!hasQuests.containsKey(p.getUniqueId()))
 			hasQuests.put(p.getUniqueId(), new ArrayList<>());
 		Quest quest = getQuest(name);
@@ -77,5 +81,14 @@ public class QuestManager {
 	public static List<Quest> hasQuests(Player player) {
 		return hasQuests.containsKey(player.getUniqueId()) ? hasQuests.get(player.getUniqueId())
 				: Collections.emptyList();
+	}
+
+	public static void giveQuest(Player p, String name, Npc npc) throws UnknownQuestException {
+		if (!hasQuests.containsKey(p.getUniqueId()))
+			hasQuests.put(p.getUniqueId(), new ArrayList<>());
+		hasQuests.get(p.getUniqueId()).removeIf(q -> name.equals(q.getName()));
+		Quest quest = getQuest(name);
+		quest.setGiver(npc);
+		hasQuests.get(p.getUniqueId()).add(quest);
 	}
 }
