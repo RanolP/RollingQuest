@@ -1,10 +1,13 @@
-package me.ranol.rollingquest.quest.modifiers;
+package me.ranol.rollingquest.api;
 
 import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import me.ranol.rollingquest.quest.modifiers.ModGamemode;
+import me.ranol.rollingquest.quest.modifiers.ModHasItem;
+import me.ranol.rollingquest.quest.modifiers.ModTakeItem;
 import me.ranol.rollingquest.util.StringParser;
 
 public interface RollingModifier {
@@ -12,6 +15,8 @@ public interface RollingModifier {
 
 	public static void initialize() {
 		register("gamemode", ModGamemode.class);
+		register("hasitem", ModHasItem.class);
+		register("takeitem", ModTakeItem.class);
 	}
 
 	public static void register(String name, Class<? extends RollingModifier> command) {
@@ -41,4 +46,7 @@ public interface RollingModifier {
 	public void apply(List<String> args);
 
 	public boolean activate(Player p);
+
+	public default void complete(Player p) {
+	}
 }

@@ -62,7 +62,6 @@ public class PlayerData implements Serializable {
 			try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))) {
 				PlayerData temp = (PlayerData) oos.readObject();
 				this.questSet = temp.questSet;
-				System.out.println(temp.questSet);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

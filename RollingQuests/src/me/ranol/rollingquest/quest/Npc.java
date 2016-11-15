@@ -37,7 +37,7 @@ public class Npc {
 	}
 
 	public void addDialogSet(DialogSet dialogSet) {
-		set.removeIf(d -> d.getName().equals(dialogSet.getName()));
+		set.removeIf(dialogSet.getName()::equals);
 		set.add(dialogSet);
 		dialogSet.setGiver(this);
 	}

@@ -3,5 +3,6 @@ visible: "§aMarc§e의 피자 모으기"
 item: 319
 modifiers:
   - gamemode creative
+  - takeitem 264 20
 complete-action: click
 completion-dialog: marc_complete

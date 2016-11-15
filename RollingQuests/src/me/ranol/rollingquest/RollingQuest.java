@@ -1,20 +1,23 @@
 package me.ranol.rollingquest;
 
+import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.ranol.rollingquest.api.RollingAction;
 import me.ranol.rollingquest.api.RollingCommand;
+import me.ranol.rollingquest.api.RollingModifier;
 import me.ranol.rollingquest.commands.CmdQuestview;
 import me.ranol.rollingquest.commands.CmdRollingQuestAdmin;
 import me.ranol.rollingquest.commands.CmdRollingQuestUser;
 import me.ranol.rollingquest.events.StaticEvents;
+import me.ranol.rollingquest.item.ItemAPI;
 import me.ranol.rollingquest.management.DialogManager;
 import me.ranol.rollingquest.management.NpcManager;
 import me.ranol.rollingquest.management.QuestManager;
 import me.ranol.rollingquest.menu.RealMenuListener;
-import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.RYamlConfiguration;
 
 public class RollingQuest extends JavaPlugin {
@@ -36,9 +39,12 @@ public class RollingQuest extends JavaPlugin {
 			saveResource("dialog-marc_complete.yml", false);
 			saveResource("npc-marc.yml", false);
 			saveResource("quest-marc.yml", false);
+			saveResource("item-marc_req.yml", false);
 		}
 		saveDefaultConfig();
 		config = RYamlConfiguration.loadConfiguration(this, "config.yml");
+		Arrays.stream(getDataFolder().listFiles(f -> f.getName().startsWith("item") && f.isFile()))
+				.map(RYamlConfiguration::loadConfiguration).forEach(ItemAPI::register);
 		DialogManager.loadDialogs();
 		NpcManager.loadNpcs();
 		QuestManager.loadQuests();

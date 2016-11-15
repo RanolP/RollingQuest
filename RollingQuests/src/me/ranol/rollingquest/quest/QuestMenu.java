@@ -44,7 +44,7 @@ public class QuestMenu extends Menu {
 		e.setCancelled(true);
 		List<MessageDialog> collected = allDialogs.stream().filter(d -> d.getSlot() == e.getSlot() && d.isVisible())
 				.collect(Collectors.toList());
-		if (collected.size() <= 0)
+		if (collected.isEmpty())
 			return;
 		MessageDialog dialog = collected.get(0);
 		if (dialog.isPlaying())

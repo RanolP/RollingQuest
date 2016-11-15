@@ -3,6 +3,7 @@ package me.ranol.rollingquest.api;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.quest.QuestMenu;
@@ -71,7 +72,8 @@ public class MessageDialog implements Cloneable {
 	public void visible(QuestMenu menu) {
 		if (isVisible()) {
 			Wrap<Integer> index = Wrap.empty(0);
-			List<String> words = WordManager.typingAll(menu.parse(msg), true);
+			List<String[]> words = WordManager.typingAll(menu.parse(msg), true).stream().map(s -> s.split("\n"))
+					.collect(Collectors.toList());
 			id.set(RollingQuest.addRepeatingTask(() -> {
 				if (!skip.isEmpty() && skip.get()) {
 					RollingQuest.cancelTask(id.get());
@@ -103,7 +105,6 @@ public class MessageDialog implements Cloneable {
 	}
 
 	private ItemStack getItemStack(String... lores) {
-		@SuppressWarnings("deprecation")
 		ItemStack stack = new ItemStack(stackId);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName(display);

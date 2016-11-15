@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
@@ -42,8 +41,7 @@ public class RYamlConfiguration extends YamlConfiguration {
 	}
 
 	public boolean contains(String... keys) {
-		return Arrays.asList(keys).stream().filter(this::contains)
-				.collect(Collectors.toList()).size() == keys.length;
+		return Arrays.asList(keys).stream().filter(this::contains).count() == keys.length;
 	}
 
 	public void setFile(File file) {
@@ -77,8 +75,7 @@ public class RYamlConfiguration extends YamlConfiguration {
 		Validate.notNull(file, "File cannot be null");
 		Files.createParentDirs(file);
 		String data = saveToString();
-		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file),
-				Charsets.UTF_8)) {
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8)) {
 			writer.write(data);
 		}
 	}
@@ -104,8 +101,7 @@ public class RYamlConfiguration extends YamlConfiguration {
 	}
 
 	@Override
-	public void load(File file) throws FileNotFoundException, IOException,
-			InvalidConfigurationException {
+	public void load(File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
 		Validate.notNull(file, "File cannot be null");
 		FileInputStream stream = new FileInputStream(file);
 		load(new InputStreamReader(stream, Charsets.UTF_8));
@@ -113,8 +109,7 @@ public class RYamlConfiguration extends YamlConfiguration {
 
 	@Deprecated
 	@Override
-	public void load(InputStream stream) throws IOException,
-			InvalidConfigurationException {
+	public void load(InputStream stream) throws IOException, InvalidConfigurationException {
 		Validate.notNull(stream, "Stream cannot be null");
 		load(new InputStreamReader(stream, Charsets.UTF_8));
 	}
@@ -139,14 +134,12 @@ public class RYamlConfiguration extends YamlConfiguration {
 		try {
 			config.load(stream);
 		} catch (IOException | InvalidConfigurationException e) {
-			Bukkit.getLogger().log(Level.SEVERE,
-					"Cannot load configuration from stream", e);
+			Bukkit.getLogger().log(Level.SEVERE, "Cannot load configuration from stream", e);
 		}
 		return config;
 	}
 
-	public static RYamlConfiguration loadConfiguration(JavaPlugin plugin,
-			String dir) {
+	public static RYamlConfiguration loadConfiguration(JavaPlugin plugin, String dir) {
 		return loadConfiguration(new File(plugin.getDataFolder(), dir));
 	}
 
@@ -160,8 +153,7 @@ public class RYamlConfiguration extends YamlConfiguration {
 		try {
 			config.load(reader);
 		} catch (IOException | InvalidConfigurationException e) {
-			Bukkit.getLogger().log(Level.SEVERE,
-					"Cannot load configuration from stream", e);
+			Bukkit.getLogger().log(Level.SEVERE, "Cannot load configuration from stream", e);
 		}
 		return config;
 	}

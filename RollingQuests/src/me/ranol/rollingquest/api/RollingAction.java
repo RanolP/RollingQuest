@@ -47,13 +47,13 @@ public abstract class RollingAction<T extends Event> implements EventFilter<T> {
 
 	public static RollingAction<?> createComplete(String args, Quest quest) {
 		List<String> data = StringParser.parse(args);
-		if (data.size() == 0)
+		if (data.isEmpty())
 			return null;
-		RollingAction<?> mod = getAction(data.get(0));
-		if (mod != null) {
-			mod.bind().setQuest(quest).bindPlayer(quest::complete).apply(data.subList(1, data.size()));
+		RollingAction<?> act = getAction(data.get(0));
+		if (act != null) {
+			act.bind().setQuest(quest).bindPlayer(quest::complete).apply(data.subList(1, data.size()));
 		}
-		return mod;
+		return act;
 	}
 
 	public static RollingAction<?> getAction(String name) {

@@ -49,7 +49,7 @@ public class DialogSet implements Cloneable {
 		MessageDialog result = null;
 		List<MessageDialog> filtered = dialogs.stream().filter(d -> d.getName().equals(name))
 				.collect(Collectors.toList());
-		if (filtered.size() > 0)
+		if (!filtered.isEmpty())
 			result = filtered.get(0);
 		return result;
 	}

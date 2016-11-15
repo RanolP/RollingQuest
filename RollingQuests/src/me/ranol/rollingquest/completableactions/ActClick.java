@@ -13,7 +13,7 @@ public class ActClick extends RollingAction<MenuClickEvent> {
 	@Override
 	public ActClick bind() {
 		setEvent(StaticEvents.bind(MenuClickEvent.class, this,
-				(event) -> getRunnables().forEach(run -> run.run((Player) event.getWhoClicked()))));
+				event -> getRunnables().forEach(run -> run.run((Player) event.getWhoClicked()))));
 		return this;
 	}
 

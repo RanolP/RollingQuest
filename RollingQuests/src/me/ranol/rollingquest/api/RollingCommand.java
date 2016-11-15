@@ -6,6 +6,7 @@ import java.util.List;
 import me.ranol.rollingquest.quest.QuestMenu;
 import me.ranol.rollingquest.quest.commands.CmdChatMessage;
 import me.ranol.rollingquest.quest.commands.CmdCloseInv;
+import me.ranol.rollingquest.quest.commands.CmdGiveItem;
 import me.ranol.rollingquest.quest.commands.CmdGiveQuest;
 import me.ranol.rollingquest.quest.commands.CmdHide;
 import me.ranol.rollingquest.quest.commands.CmdIssueCommand;
@@ -30,6 +31,7 @@ public interface RollingCommand {
 		register("tp", CmdTeleport.class);
 		register("gquest", CmdGiveQuest.class);
 		register("openset", CmdOpenSet.class);
+		register("gitem", CmdGiveItem.class);
 	}
 
 	public static void register(String name, Class<? extends RollingCommand> command) {
@@ -38,7 +40,7 @@ public interface RollingCommand {
 
 	public static RollingCommand createCommand(String args) {
 		List<String> data = StringParser.parse(args);
-		if (data.size() == 0)
+		if (data.isEmpty())
 			return null;
 		RollingCommand command = getCommand(data.get(0));
 		if (command != null)

@@ -15,7 +15,7 @@ Pizza2:
   commands:
     - show Pizza3
 Pizza3:
-  text: "§c피자§f를 §e10판§f정도만 사오지 않겠니?"
+  text: "§c피자§f를 §e10판§f정도만 사오지 않겠니?\n§a그리고 겜모로 와라."
   slot: 20
   item: 260
   display: "§aMarc와 대화하기."

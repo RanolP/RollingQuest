@@ -14,10 +14,10 @@ import me.ranol.rollingquest.PlayerData;
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.api.Quest;
 import me.ranol.rollingquest.api.RollingAction;
+import me.ranol.rollingquest.api.RollingModifier;
 import me.ranol.rollingquest.exceptions.UnknownDialogException;
 import me.ranol.rollingquest.exceptions.UnknownQuestException;
 import me.ranol.rollingquest.quest.Npc;
-import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.PlaceHolders;
 import me.ranol.rollingquest.util.RYamlConfiguration;
 import me.ranol.rollingquest.util.Util;
@@ -37,8 +37,7 @@ public class QuestManager {
 			RYamlConfiguration cfg = RYamlConfiguration.loadConfiguration(file);
 			Quest quest = new Quest(cfg.getString("name", ""));
 			quest.setDisplayName(cfg.getString("visible", quest.getName()));
-			cfg.getStringList("modifiers").stream().map(RollingModifier::createModifier).collect(Collectors.toList())
-					.forEach(quest::addModifiers);
+			cfg.getStringList("modifiers").stream().map(RollingModifier::createModifier).forEach(quest::addModifiers);
 			quest.setStackId(cfg.getInt("item", RollingQuest.defaultItem()));
 			quest.setCompleteAction(RollingAction.createComplete(cfg.getString("complete-action", "click"), quest));
 			String dialog = cfg.getString("completion-dialog", "");
@@ -54,10 +53,10 @@ public class QuestManager {
 			}
 		}
 		data.questMap().forEach((uid, list) -> {
+			if (!hasQuests.containsKey(uid))
+				hasQuests.put(uid, new ArrayList<>());
 			list.forEach(name -> {
 				try {
-					if (!hasQuests.containsKey(uid))
-						hasQuests.put(uid, new ArrayList<>());
 					hasQuests.get(uid).removeIf(q -> name.equals(q.getName()));
 					Quest q = getQuest(name);
 					hasQuests.get(uid).add(q);
@@ -92,7 +91,7 @@ public class QuestManager {
 	}
 
 	public static boolean availableQuest(String name) {
-		return quests.stream().filter(npc -> npc.getName().equals(name)).count() > 0;
+		return quests.stream().filter(quest -> quest.getName().equals(name)).count() > 0;
 	}
 
 	public static List<Quest> hasQuests(Player player) {
@@ -103,7 +102,7 @@ public class QuestManager {
 	public static void giveQuest(Player p, String name, Npc npc) throws UnknownQuestException {
 		if (!hasQuests.containsKey(p.getUniqueId()))
 			hasQuests.put(p.getUniqueId(), new ArrayList<>());
-		hasQuests.get(p.getUniqueId()).removeIf(q -> name.equals(q.getName()));
+		hasQuests.get(p.getUniqueId()).removeIf(name::equals);
 		Quest quest = getQuest(name);
 		quest.setGiver(npc);
 		hasQuests.get(p.getUniqueId()).add(quest);

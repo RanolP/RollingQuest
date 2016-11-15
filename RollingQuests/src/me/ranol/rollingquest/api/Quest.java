@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.management.QuestManager;
 import me.ranol.rollingquest.quest.Npc;
-import me.ranol.rollingquest.quest.modifiers.RollingModifier;
 import me.ranol.rollingquest.util.PlaceHolders;
 
 public class Quest {
@@ -93,6 +92,7 @@ public class Quest {
 
 	public void complete(Player completor) {
 		if (canComplete(completor)) {
+			getModifiers().forEach(mod -> mod.complete(completor));
 			completor.closeInventory();
 			try {
 				QuestManager.takeQuest(completor, getName());
@@ -106,7 +106,6 @@ public class Quest {
 		if (this.action != null)
 			this.action.unbind();
 		this.action = action;
-
 		return this;
 	}
 
