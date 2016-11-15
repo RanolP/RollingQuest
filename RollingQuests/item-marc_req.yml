@@ -1,0 +1,17 @@
+marc_pizza:
+  type: 260
+  durability: 0
+  count: 64
+  name: "§a마크가 §e좋아하는 §c피§6자"
+  lores:
+    - "§e도☆노 피자다. 맛있다."
+    - "§a마크에게 줘야한다."
+marc_head:
+  type: 397
+  durability: 3
+  count: 64
+  name: "§a마크의 §e머리"
+  lores:
+    - "§e머리 땄다, 너 주금 ㅋ"
+    - "§a마크가 원망한다"
+  skullowner: Marc
