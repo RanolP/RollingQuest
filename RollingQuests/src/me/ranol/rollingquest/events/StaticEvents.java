@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.menu.MenuClickEvent;
@@ -40,6 +41,13 @@ public class StaticEvents implements Listener {
 
 	@EventHandler
 	public void onMenuClick(MenuClickEvent e) {
+		
 		getRunnables(MenuClickEvent.class).stream().forEach(r -> r.matchedRun(e));
+	}
+
+	@EventHandler
+	public void onMenuClick(EntityDeathEvent e) {
+		if (e.getEntity().getKiller() != null)
+			getRunnables(EntityDeathEvent.class).stream().forEach(r -> r.matchedRun(e));
 	}
 }

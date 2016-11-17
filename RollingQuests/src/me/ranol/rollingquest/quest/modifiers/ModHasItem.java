@@ -10,7 +10,7 @@ import me.ranol.rollingquest.item.ItemAPI;
 import me.ranol.rollingquest.item.NamedItem;
 import me.ranol.rollingquest.util.Util;
 
-public class ModHasItem implements RollingModifier {
+public class ModHasItem extends RollingModifier {
 	NamedItem item;
 	int amt;
 

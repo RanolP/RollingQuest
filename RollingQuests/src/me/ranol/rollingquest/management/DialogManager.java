@@ -3,7 +3,6 @@ package me.ranol.rollingquest.management;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.api.DialogSet;
@@ -51,9 +50,10 @@ public class DialogManager {
 	}
 
 	public static DialogSet getDialogSet(String name) throws UnknownDialogException {
-		List<DialogSet> filtered = dialogs.stream().filter(d -> d.getName().equals(name)).collect(Collectors.toList());
-		if (filtered.isEmpty())
-			throw new UnknownDialogException("Dialog " + name + " is not exists.");
-		return filtered.get(0);
+		for (DialogSet d : dialogs) {
+			if (d.getName().equals(name))
+				return d;
+		}
+		throw new UnknownDialogException("Dialog " + name + " is not exists.");
 	}
 }

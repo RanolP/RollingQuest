@@ -1,5 +1,6 @@
 package me.ranol.rollingquest;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
@@ -29,6 +30,8 @@ public class RollingQuest extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		Bukkit.getPluginManager().registerEvents(new RealMenuListener(), this);
+		StaticVariables.getInstance().setFile(new File(getDataFolder(), "variable.ser"));
+		StaticVariables.load();
 		RollingCommand.initialize();
 		RollingModifier.initialize();
 		RollingAction.initialize();

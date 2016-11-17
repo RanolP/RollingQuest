@@ -2,6 +2,7 @@ package me.ranol.rollingquest.quest.commands;
 
 import java.util.List;
 
+import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.api.DialogSet;
 import me.ranol.rollingquest.api.RollingCommand;
 import me.ranol.rollingquest.exceptions.UnknownDialogException;
@@ -23,6 +24,6 @@ public class CmdOpenSet implements RollingCommand {
 
 	@Override
 	public void activate(QuestMenu menu) {
-		dialog.openUI(menu.getPlayer());
+		RollingQuest.addDelayedTask(() -> dialog.openUI(menu.getPlayer()), 1);
 	}
 }

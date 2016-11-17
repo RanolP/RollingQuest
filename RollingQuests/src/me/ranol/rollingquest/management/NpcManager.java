@@ -3,7 +3,6 @@ package me.ranol.rollingquest.management;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.exceptions.UnknownDialogException;
@@ -44,10 +43,11 @@ public class NpcManager {
 	}
 
 	public static Npc getNpc(String name) throws UnknownNpcException {
-		List<Npc> filtered = npcs.stream().filter(npc -> npc.getName().equals(name)).collect(Collectors.toList());
-		if (filtered.isEmpty())
-			throw new UnknownNpcException("Npc " + name + " is not exists.");
-		return filtered.get(0);
+		for (Npc npc : npcs) {
+			if (npc.getName().equals(name))
+				return npc;
+		}
+		throw new UnknownNpcException("Npc " + name + " is not exists.");
 	}
 
 	public static boolean availableNpc(String name) {

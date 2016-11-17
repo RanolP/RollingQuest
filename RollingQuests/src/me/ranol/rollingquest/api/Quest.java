@@ -12,6 +12,7 @@ import me.ranol.rollingquest.RollingQuest;
 import me.ranol.rollingquest.management.QuestManager;
 import me.ranol.rollingquest.quest.Npc;
 import me.ranol.rollingquest.util.PlaceHolders;
+import me.ranol.rollingquest.util.PlayerVariable;
 
 public class Quest {
 
@@ -22,6 +23,15 @@ public class Quest {
 	private RollingAction<?> action;
 	private DialogSet set;
 	private Npc giver;
+	private PlayerVariable map = new PlayerVariable();
+
+	public void applyVariable(Class<? extends RollingModifier> clz, Player p, String key, Object val) {
+		map.getMap(p).set(key, clz.getSimpleName() + "$" + val);
+	}
+
+	public Object getVariable(Class<? extends RollingModifier> clz, Player p, String key) {
+		return map.getMap(p).get(clz.getSimpleName() + "$" + key);
+	}
 
 	public Quest(String name) {
 		this.questName = name;

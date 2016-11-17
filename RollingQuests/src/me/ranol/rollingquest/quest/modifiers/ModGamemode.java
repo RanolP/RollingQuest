@@ -5,9 +5,10 @@ import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+import me.ranol.rollingquest.api.Quest;
 import me.ranol.rollingquest.api.RollingModifier;
 
-public class ModGamemode implements RollingModifier {
+public class ModGamemode extends RollingModifier {
 	String gamemode;
 
 	@Override

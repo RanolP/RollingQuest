@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -37,7 +36,13 @@ public class QuestManager {
 			RYamlConfiguration cfg = RYamlConfiguration.loadConfiguration(file);
 			Quest quest = new Quest(cfg.getString("name", ""));
 			quest.setDisplayName(cfg.getString("visible", quest.getName()));
-			cfg.getStringList("modifiers").stream().map(RollingModifier::createModifier).forEach(quest::addModifiers);
+			for (String s : cfg.getStringList("modifiers")) {
+				RollingModifier mod = RollingModifier.createModifier(s);
+				if (mod == null)
+					continue;
+				mod.setQuest(quest);
+				quest.addModifiers(mod);
+			}
 			quest.setStackId(cfg.getInt("item", RollingQuest.defaultItem()));
 			quest.setCompleteAction(RollingAction.createComplete(cfg.getString("complete-action", "click"), quest));
 			String dialog = cfg.getString("completion-dialog", "");
@@ -71,10 +76,11 @@ public class QuestManager {
 	}
 
 	public static Quest getQuest(String name) throws UnknownQuestException {
-		List<Quest> filtered = quests.stream().filter(npc -> npc.getName().equals(name)).collect(Collectors.toList());
-		if (filtered.isEmpty())
-			throw new UnknownQuestException("Quest " + name + " is not exists.");
-		return filtered.get(0);
+		for (Quest q : quests) {
+			if (q.getName().equals(name))
+				return q;
+		}
+		throw new UnknownQuestException("Quest " + name + " is not exists.");
 	}
 
 	public static void giveQuest(Player p, String name) throws UnknownQuestException {

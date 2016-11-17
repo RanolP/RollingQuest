@@ -71,9 +71,9 @@ public class Util {
 	}
 
 	public static boolean giveItem(Player p, ItemStack item) {
-		if (item.getAmount() > 64) {
-			giveItem(p, item, 64);
-			return giveItem(p, item, item.getAmount() - 64);
+		if (item.getAmount() > item.getMaxStackSize()) {
+			giveItem(p, item, item.getMaxStackSize());
+			return giveItem(p, item, item.getAmount() - item.getMaxStackSize());
 		}
 		if (p.getInventory().firstEmpty() != -1) {
 			p.getInventory().addItem(new ItemStack[] { item });

@@ -7,16 +7,19 @@ import org.bukkit.entity.Player;
 
 import me.ranol.rollingquest.quest.modifiers.ModGamemode;
 import me.ranol.rollingquest.quest.modifiers.ModHasItem;
+import me.ranol.rollingquest.quest.modifiers.ModKillCount;
 import me.ranol.rollingquest.quest.modifiers.ModTakeItem;
 import me.ranol.rollingquest.util.StringParser;
 
-public interface RollingModifier {
+public abstract class RollingModifier {
 	static final HashMap<String, Class<? extends RollingModifier>> modifiers = new HashMap<>();
+	private Quest sQuest;
 
 	public static void initialize() {
 		register("gamemode", ModGamemode.class);
 		register("hasitem", ModHasItem.class);
 		register("takeitem", ModTakeItem.class);
+		register("kill", ModKillCount.class);
 	}
 
 	public static void register(String name, Class<? extends RollingModifier> command) {
@@ -41,12 +44,21 @@ public interface RollingModifier {
 		}
 	}
 
-	public String getString(Player p);
+	public abstract String getString(Player p);
 
-	public void apply(List<String> args);
+	public abstract void apply(List<String> args);
 
-	public boolean activate(Player p);
+	public abstract boolean activate(Player p);
 
-	public default void complete(Player p) {
+	public void complete(Player p) {
+	}
+
+	public RollingModifier setQuest(Quest quest) {
+		this.sQuest = quest;
+		return this;
+	}
+
+	public Quest getQuest() {
+		return this.sQuest;
 	}
 }

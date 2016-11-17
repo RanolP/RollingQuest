@@ -72,12 +72,11 @@ public class QuestMenu extends Menu {
 	}
 
 	public MessageDialog getDialog(String name) {
-		MessageDialog result = null;
-		List<MessageDialog> filtered = allDialogs.stream().filter(d -> d.getName().equals(name))
-				.collect(Collectors.toList());
-		if (filtered.size() > 0)
-			result = filtered.get(0);
-		return result;
+		for (MessageDialog d : allDialogs) {
+			if (d.getName().equals(name))
+				return d;
+		}
+		return null;
 	}
 
 	public List<MessageDialog> getDialogs(int slot) {

@@ -5,12 +5,13 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import me.ranol.rollingquest.api.Quest;
 import me.ranol.rollingquest.api.RollingModifier;
 import me.ranol.rollingquest.item.ItemAPI;
 import me.ranol.rollingquest.item.NamedItem;
 import me.ranol.rollingquest.util.Util;
 
-public class ModTakeItem implements RollingModifier {
+public class ModTakeItem extends RollingModifier {
 	NamedItem item;
 	int amt;
 

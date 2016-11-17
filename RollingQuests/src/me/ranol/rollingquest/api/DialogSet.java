@@ -2,7 +2,6 @@ package me.ranol.rollingquest.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -46,12 +45,11 @@ public class DialogSet implements Cloneable {
 	}
 
 	public MessageDialog getDialog(String name) {
-		MessageDialog result = null;
-		List<MessageDialog> filtered = dialogs.stream().filter(d -> d.getName().equals(name))
-				.collect(Collectors.toList());
-		if (!filtered.isEmpty())
-			result = filtered.get(0);
-		return result;
+		for (MessageDialog d : dialogs) {
+			if (d.getName().equals(name))
+				return d;
+		}
+		return null;
 	}
 
 	public String getName() {
