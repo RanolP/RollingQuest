@@ -1,2 +1,2 @@
 # RollingQuest
-Simply Minecraft Quest Plugin.
+Simple Minecraft Quest Plugin.
